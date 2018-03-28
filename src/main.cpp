@@ -5,7 +5,7 @@
 using namespace std;
 
 shared_ptr<NetworkTable> myNetworkTable; //our networktable for reading/writing
-string netTableAddress = "10.28.54.32"; //address of the rio
+string netTableAddress = "10.28.54.2"; //address of the rio
 
 //useful for testing OpenCV drawing to see you can modify an image
 void fillCircle (cv::Mat img, int rad, cv::Point center);
@@ -24,7 +24,7 @@ int
 bitrate = 600000, //kbit/sec over network
 port_stream = 1735, //destination port for raw image
 port_thresh = 5805; //destination port for thresholded image
-string ip = "10.28.54.32"; //destination ip
+string ip = "10.28.54.5"; //destination ip
 
 string tableName = "CVResultsTable";
 
@@ -141,5 +141,9 @@ void pushToNetworkTables (VisionResultsPackage info) {
     //myNetworkTable -> PutNumber ("Sample Sat", info.sampleSat);
     //myNetworkTable -> PutNumber ("Sample Val", info.sampleVal);
     //myNetworkTable -> Flush();
+    myNetworkTable  -> PutNumber("x", info.x);
+    myNetworkTable  -> PutNumber("y", info.y);
+    myNetworkTable  -> PutNumber("width", info.width);
+    myNetworkTable  -> PutNumber("height", info.height);
 }
 

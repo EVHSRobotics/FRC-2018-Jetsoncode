@@ -83,12 +83,30 @@ VisionResultsPackage calculate(const cv::Mat &bgr, cv::Mat &processedImage){
     processedImage = bgr.clone();
     pipeline.Process(processedImage);
     vector<vector<cv::Point>> conts = *pipeline.GetFilterContoursOutput();
+    cv::Rect biggestRect;
+    double largestArea = -1;
     for(vector<cv::Point> cont : conts) {
          cv::Rect rect = cv::boundingRect( cv::Mat(cont));
          cv::rectangle(processedImage, rect.tl(), rect.br(), cv::Scalar(0, 255, 0), 2, 8, 0);
-    }    
-    //create the results package
+        if(rect.width * rect.height > largestArea) {
+            largestArea = rect.width * rect.height;
+            biggestRect = rect;
+        }
+    }
+
     VisionResultsPackage res;
+    if(&biggestRect != NULL) {
+        cv::rectangle(processedImage, biggestRect.tl(), biggestRect.br(), cv::Scalar(255, 0, 0));    
+        res.width = biggestRect.width;
+        res.height = biggestRect.height;
+        res.x = biggestRect.x;
+        res.y = biggestRect.y;
+    } else {
+       res.width = -1;
+       res.height = -1;
+       res.x = -1;
+       res.y = -1;
+    }
     
    
 

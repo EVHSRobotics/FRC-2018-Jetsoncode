@@ -17,16 +17,16 @@ void GripPipeline::Process(cv::Mat& source0){
 	//Step HSL_Threshold0:
 	//input
 	cv::Mat hslThresholdInput = blurOutput;
-	double hslThresholdHue[] = {22.66187050359712, 76.96969696969695};
-	double hslThresholdSaturation[] = {32.10431654676259, 192.75252525252523};
-	double hslThresholdLuminance[] = {29.81115107913669, 199.1919191919192};
+	double hslThresholdHue[] = {25.899280575539567, 36.06060606060607};
+	double hslThresholdSaturation[] = {41.276978417266186, 255.0};
+	double hslThresholdLuminance[] = {0.0, 255.0};
 	hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, this->hslThresholdOutput);
 	//Step CV_erode0:
 	//input
 	cv::Mat cvErodeSrc = hslThresholdOutput;
 	cv::Mat cvErodeKernel;
 	cv::Point cvErodeAnchor(-1, -1);
-	double cvErodeIterations = 10.0;  // default Double
+	double cvErodeIterations = 15.0;  // default Double
     int cvErodeBordertype = cv::BORDER_CONSTANT;
 	cv::Scalar cvErodeBordervalue(-1);
 	cvErode(cvErodeSrc, cvErodeKernel, cvErodeAnchor, cvErodeIterations, cvErodeBordertype, cvErodeBordervalue, this->cvErodeOutput);
@@ -35,7 +35,7 @@ void GripPipeline::Process(cv::Mat& source0){
 	cv::Mat cvDilateSrc = cvErodeOutput;
 	cv::Mat cvDilateKernel;
 	cv::Point cvDilateAnchor(-1, -1);
-	double cvDilateIterations = 10.0;  // default Double
+	double cvDilateIterations = 15.0;  // default Double
     int cvDilateBordertype = cv::BORDER_CONSTANT;
 	cv::Scalar cvDilateBordervalue(-1);
 	cvDilate(cvDilateSrc, cvDilateKernel, cvDilateAnchor, cvDilateIterations, cvDilateBordertype, cvDilateBordervalue, this->cvDilateOutput);
@@ -60,8 +60,8 @@ void GripPipeline::Process(cv::Mat& source0){
 	double filterContoursSolidity[] = {0, 100};
 	double filterContoursMaxVertices = 1000000.0;  // default Double
 	double filterContoursMinVertices = 0.0;  // default Double
-	double filterContoursMinRatio = 0.0;  // default Double
-	double filterContoursMaxRatio = 1000.0;  // default Double
+	double filterContoursMinRatio = 0.1;  // default Double
+	double filterContoursMaxRatio = 1.5;  // default Double
 	filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, this->filterContoursOutput);
 }
 
